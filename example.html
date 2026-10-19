@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Мониторинг и управление парковкой</title>
+    </head>
+
+    <body>
+        <header>
+            <h1 align="center">Управление парковкой</h1>
+        </header>
+        
+        <h2>Задайте максимальное количество парковочных мест <input id="number" type="number" min="2" max="70" value="30"></h2>
+
+        <h2>Управление шлагбаумами на въезд/выезд</h2>
+
+	    <input type="button" value="Шлагбаум на въезд открыть" onclick="Add()"> <br> <br>
+        <input type="button" value="Шлагбаум на выезд открыть" onclick="Add()"> <br> <br>
+        
+        <h2>Состояние парковки</h2>
+
+        <p>Текущее количество свободных мест:</p> <input id="amount_free" type="text" readonly>
+        <p>Текущее количество занятых мест:</p> <input id="amount_n_free" type="text" readonly>
+        <p>Текущее состояние шлагбаума на въезд:</p> <input id="state_in" type="text" readonly>
+        <p>Текущее состояние шлагбаума на выезд:</p> <input id="state_out" type="text" readonly>
+
+        <footer>
+            <p>Проект выполнила бригада группы 2408 в составе: Мусатов Александр Викторович, Мякиньнов Михаил Алексеевич</p>
+            <p>СПбГЭТУ "ЛЭТИ", Санкт-Петербург, 2026 год</p>  
+        </footer>
+    </body>
+
+<script>
+		function Read(){
+			// ПРИМЕР 1
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=read&file=test.txt')
+			.then(response => { // Обработка первого этапа Promise - получение ответа от сервера
+				if(!response.ok) { // Проверка статуса HTTP-ответа. response.ok возвращает true если статус в диапазоне 200-299
+					throw new Error('HTTP error! status: ' + response.status);
+				}
+				return response.json(); // Если статус успешный, преобразуем ответ в JSON формат. Это возвращает новый Promise с распарсенными данными
+			})
+			.then(data => { // Обработка второго этапа Promise - работа с полученными данными
+				console.log('Пример 1. Вывод данных с неизвествой структурой');
+				console.log('Полученный массив из файла test.txt:', data);
+        
+				// data будет массивом строк/чисел из файла
+				// Проходим по каждому элементу массива с помощью forEach
+				data.forEach((item, index) => {
+					// Выводим каждый отдельный элемент с его номером
+					// index - номер элемента (начинается с 0)
+					console.log(`Элемент ${index} - ${item}`);
+				});
+			})
+			.catch(error => { // Обработка возможных ошибок на любом этапе выполнения Promise
+				console.error('Ошибка:', error); // Вывод ошибки
+			});
+
+			// ПРИМЕР 2
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=read&file=railLight_1.txt')
+			.then(response => { // Обработка первого этапа Promise - получение ответа от сервера
+				if(!response.ok) { // Проверка статуса HTTP-ответа. response.ok возвращает true если статус в диапазоне 200-299
+					throw new Error('HTTP error! status: ' + response.status);
+				}
+				return response.json(); // Если статус успешный, преобразуем ответ в JSON формат. Это возвращает новый Promise с распарсенными данными
+			})
+			.then(data => { // Обработка второго этапа Promise - работа с полученными данными
+				console.log('Пример 2. Вывод данных с извествой структурой');
+				console.log('Полученный массив из файла railLight_1.txt:', data);
+				console.log('Деструктуризированный массив:');
+				
+				// Деструктуризация массива используется, когда структура данных известна
+				const [status, value, timestamp] = data;
+				
+				console.log('Цвет:', status);
+				console.log('Состояние кнопки:', value);
+				console.log('Последнее срабатывание:', timestamp);
+			})
+			.catch(error => { // Обработка возможных ошибок на любом этапе выполнения Promise
+				console.error('Ошибка:', error); // Вывод ошибки
+			});
+		}
+
+		function Replace(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=replace&file=test.txt&number=1&str=Replace')
+			// Вывод сообщения в консоль
+			console.log('В файле test.txt заменена первая строка на Replace');
+		}
+
+		function Write(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=write&file=test.txt&state=Write')
+			// Вывод сообщения в консоль
+			console.log('В файл test.txt записана строка Write');
+		}
+
+		function Add(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=add&file=test.txt&str=Add')
+			// Вывод сообщения в консоль
+			console.log('В файл test.txt добавлена строка Add');
+		}
+
+		function Clean(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=clean&file=test.txt')
+			// Вывод сообщения в консоль
+			console.log('Файл test.txt очищен');
+		}
+	</script>
+</html>

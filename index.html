@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Мониторинг и управление парковкой</title>
+		<link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>Мониторинг и управление парковкой</h1>
+        </header>
+        <main>
+			<p>Описание проекта</p>
+
+			<p>Отслеживаемые параметры: ...</p>  
+
+			<p>Управление осуществляется следующим образом...</p>
+
+			<p>Функция для чтения данных из указанного файла, в примере есть обработка двух видов данных: с известной и неизвестной структурой</p>
+			<input type="button" value="Функция Read" onclick="Read()"> <br> <br>
+			
+			<p>Функция для замены строки в файле</p> 
+			<input type="button" value="Функция Replace" onclick="Replace()"> <br> <br>
+			
+			<p>Функция для записи файл - файл очищается, в него записывается переданная строка</p> 
+			<input type="button" value="Функция Write" onclick="Write()"> <br> <br>
+			
+			<p>Функция для добавления строки в файл - переданная строка записывается в конец файла</p> 
+			<input type="button" value="Функция Add" onclick="Add()"> <br> <br>
+			
+			<p>Функция для очистки файла</p>
+			<input type="button" value="Функция Clean" onclick="Clean()"> <br> <br>
+
+			<a href="example.html">Пример страницы мониторинга-управления одним светофором</a>
+		</main>
+        <footer>
+            <p>Проект выполнила бригада группы 2408 в составе: Мусатов Александр Викторович, Мякиньнов Михаил Алексеевич</p>
+            <p>СПбГЭТУ "ЛЭТИ", Санкт-Петербург, 2026 год</p>  
+        </footer>
+    </body>
+
+    <script>
+		function Read(){
+			// ПРИМЕР 2
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=read&file=parking.txt')
+			.then(response => { // Обработка первого этапа Promise - получение ответа от сервера
+				if(!response.ok) { // Проверка статуса HTTP-ответа. response.ok возвращает true если статус в диапазоне 200-299
+					throw new Error('HTTP error! status: ' + response.status);
+				}
+				return response.json(); // Если статус успешный, преобразуем ответ в JSON формат. Это возвращает новый Promise с распарсенными данными
+			})
+			.then(data => { // Обработка второго этапа Promise - работа с полученными данными
+				console.log('Пример 2. Вывод данных с извествой структурой');
+				console.log('Полученный массив из файла parking.txt:', data);
+				console.log('Деструктуризированный массив:');
+				
+				// Деструктуризация массива используется, когда структура данных известна
+				const [max_status, free_status, value_in, value_out] = data;
+				
+				console.log('Максимальное количество мест:', max_status);
+				console.log('Количество свободных мест:', free_status);
+				console.log('Состояние шлагбаума на въезд:', value_in);
+				console.log('Состояние шлагбаума на выезд:', value_out);
+			})
+			.catch(error => { // Обработка возможных ошибок на любом этапе выполнения Promise
+				console.error('Ошибка:', error); // Вывод ошибки
+			});
+		}
+
+		function Replace(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=replace&file=test.txt&number=1&str=Replace')
+			// Вывод сообщения в консоль
+			console.log('В файле test.txt заменена первая строка на Replace');
+		}
+
+		function Write(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=write&file=test.txt&state=Write')
+			// Вывод сообщения в консоль
+			console.log('В файл test.txt записана строка Write');
+		}
+
+		function Add(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=add&file=test.txt&str=Add')
+			// Вывод сообщения в консоль
+			console.log('В файл test.txt добавлена строка Add');
+		}
+
+		function Clean(){
+			// Метод fetch() для отправки GET-запроса по указанному URL
+			fetch('/cgi-bin/files.exe?query=clean&file=test.txt')
+			// Вывод сообщения в консоль
+			console.log('Файл test.txt очищен');
+		}
+	</script>
+</html>
